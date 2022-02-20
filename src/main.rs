@@ -5,12 +5,24 @@ use axum::{
     routing::get,
     Router,
 };
-use std::{net::SocketAddr, time::Duration};
+use std::{net::SocketAddr, time::Duration, io::Write};
 use tower_http::{ trace::TraceLayer};
 
 use tracing::Level;
 use tracing_appender::rolling;
-use tracing_subscriber::fmt::writer::MakeWriterExt;
+use tracing_subscriber::fmt::{writer::MakeWriterExt, time::FormatTime};
+// use time::macros::format_description;
+//use tracing_subscriber::fmt::format_description;
+use tracing_subscriber::fmt::{self, time::LocalTime};
+use time::macros::format_description;
+use time::OffsetDateTime;
+// use time::format_description;
+
+//  use time::OffsetDateTime;
+// Using [`time::format_description::parse`]:
+    ///
+    /// ```
+// use tracing_subscriber::fmt::{self, time};
 // use tracing::Span;
 // use log::{debug, error, log_enabled, info, Level};
 #[tokio::main]
@@ -25,10 +37,10 @@ async fn main() {
     // }
 
 
-    let info_appender = rolling::daily("d:\\logs", "info");
+    let info_appender = rolling::daily("/opt/logs", "info");
     let (info_appender, _info_guard) = tracing_appender::non_blocking(info_appender);
 
-    let warn_appender = rolling::daily("d:\\logs", "warn");
+    let warn_appender = rolling::daily("/opt/logs", "warn");
     let (warn_appender, _warn_guard) = tracing_appender::non_blocking(warn_appender);
 
 
@@ -43,10 +55,18 @@ async fn main() {
 
     // let subscriber = FmtSubscriber::;
     // tracing::subscriber::set_global_default(subscriber);
+    //time::format_description::parse("[hour]:[minute]:[second]");
+    // let format = format_description::parse(
+    //     "[year]-[month]-[day] [hour]:[minute]:[second] [offset_hour \
+    //          sign:mandatory]:[offset_minute]:[offset_second]",
+    // );
+
+   //let  time =  tracing_subscriber::fmt::time::FormatTime::format_time(&self, "[hour]:[minute]:[second]");
+   let timer = LocalTime::new(format_description!("[hour]:[minute]:[second]"));
     tracing_subscriber::fmt()
     .with_writer(mk_writer)
     .with_max_level(Level::TRACE)
-    //.with_timer(tracing_subscriber::fmt::time::time())
+    .with_timer(timer)
    // .with_timer(tracing_subscriber::fmt::time::Uptime::)
     .init();
 
@@ -70,7 +90,7 @@ async fn main() {
       
     // run it    
 
-    let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
+    let addr = SocketAddr::from(([0, 0, 0, 0], 3000));
     tracing::debug!("listening on {}", addr);
     axum::Server::bind(&addr)
         .serve(app.into_make_service())
