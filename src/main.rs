@@ -6,7 +6,7 @@ use tracing::Level;
 use tracing_appender::rolling;
 use tracing_subscriber::fmt::writer::MakeWriterExt;
 
-use time::{format_description, UtcOffset};
+use time::{macros::format_description, UtcOffset};
 use tracing_subscriber::fmt::time::OffsetTime;
 use tracing_subscriber::EnvFilter;
 
@@ -28,16 +28,16 @@ async fn main() {
         .and(warn_appender.with_max_level(Level::WARN))
         .and(std::io::stdout.with_max_level(tracing::Level::TRACE));
 
-    let format = "[year]-[month]-[day] [hour]:[minute]:[second].[subsecond digits:3]";
+        let local_time = OffsetTime::new(
+            UtcOffset::from_hms(8, 0, 0).unwrap(),
+            format_description!("[year]-[month]-[day] [hour]:[minute]:[second].[subsecond digits:3]"),
+        );
 
     tracing_subscriber::fmt()
         .with_env_filter(EnvFilter::from_default_env())
         .with_writer(mk_writer)
         .with_max_level(Level::TRACE)
-        .with_timer(OffsetTime::new(
-            UtcOffset::current_local_offset().unwrap(),
-            format_description::parse(format).unwrap(),
-        ))
+        .with_timer(local_time)
         .init();
 
     // build our application with a route
