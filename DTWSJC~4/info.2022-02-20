@@ -1,2 +1,0 @@
-[2m2022-02-20T12:02:38.310861Z[0m [34mDEBUG[0m [2mtrace_example[0m[2m:[0m listening on 127.0.0.1:3000
-[2m2022-02-20T12:02:38.311012Z[0m [35mTRACE[0m [2mmio::poll[0m[2m:[0m registering event source with poller: token=Token(1), interests=READABLE | WRITABLE    

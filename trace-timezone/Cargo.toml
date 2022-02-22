@@ -1,0 +1,19 @@
+[package]
+name = "trace-timezone"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[dependencies]
+axum = "0.4.5"
+tokio = { version = "1.0", features = ["full"] }
+tracing = "0.1.*"
+tracing-subscriber = { version = "0.3", features = ["local-time"] }
+tracing-appender = "0.2"
+tracing-log = "0.1.2"
+log ="0.4.14"
+tower-http = { version = "0.2.0", features = ["trace"] }
+time = { version = "0.3", features = ["formatting", "macros"] }
+
+# [target.'cfg(...)']
+# rustflags = "unsound_local_offset"

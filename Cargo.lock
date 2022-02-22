@@ -709,6 +709,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "trace-timezone"
+version = "0.1.0"
+dependencies = [
+ "axum",
+ "log",
+ "time",
+ "tokio",
+ "tower-http",
+ "tracing",
+ "tracing-appender",
+ "tracing-log",
+ "tracing-subscriber",
+]
+
+[[package]]
 name = "tracing"
 version = "0.1.31"
 source = "registry+https://github.com/rust-lang/crates.io-index"

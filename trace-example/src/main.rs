@@ -28,10 +28,10 @@ async fn main() {
         .and(warn_appender.with_max_level(Level::WARN))
         .and(std::io::stdout.with_max_level(tracing::Level::TRACE));
 
-        let local_time = OffsetTime::new(
-            UtcOffset::from_hms(8, 0, 0).unwrap(),
-            format_description!("[year]-[month]-[day] [hour]:[minute]:[second].[subsecond digits:3]"),
-        );
+    let local_time = OffsetTime::new(
+        UtcOffset::from_hms(8, 0, 0).unwrap(),
+        format_description!("[year]-[month]-[day] [hour]:[minute]:[second].[subsecond digits:3]"),
+    );
 
     tracing_subscriber::fmt()
         .with_env_filter(EnvFilter::from_default_env())
